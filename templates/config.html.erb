@@ -21,8 +21,16 @@
       margin: 0 auto;
     }
     input {
+      display: inline;
+      margin: 0 5px 10px 0;
+    }
+    label {
       display: block;
-      margin: 0 auto 10px auto;
+      border-bottom: 1px solid #CCC;
+      margin-top: 5px;
+    }
+    label:last-of-type {
+      border-bottom: none;
     }
 
     input[type=submit], .logout {
@@ -52,13 +60,11 @@
     <form id="signinForm" method="POST" action="/config">
       <input name="api_token" type="hidden" value="<%= api_token %>" />
       <input name="initials" type="hidden" value="<%= initials %>" />
-      <label for="project_id">Project
-        <select name="project_id">
-          <% projects.each do |project| %>
-            <option value="<%= project[:id] %>"><%= project[:name] %></option>
-          <% end %>
-        </select>
-      </label>
+      <% projects.each do |project| %>
+        <label>
+          <input name="project_ids[]" value="<%= project[:id] %>" type="checkbox" /><%= project[:name] %>
+        </label>
+      <% end %>
       <input type='submit'/>
       <a class='logout' href="/logout">Log Out</a>
     </form>
