@@ -1,3 +1,4 @@
 ---
 applications:
 - name: standup-config
+  memory: 128M
