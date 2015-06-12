@@ -60,9 +60,10 @@
     <form id="signinForm" method="POST" action="/config">
       <input name="api_token" type="hidden" value="<%= api_token %>" />
       <input name="initials" type="hidden" value="<%= initials %>" />
-      <% projects.each do |project| %>
+      <% projects.sort{ |a,b| a[:name] <=> b[:name] }.each do |project| %>
+        <% checked = (session[:ids] && session[:ids].split(',').any?{|id| id == project[:id].to_s}) ? 'checked' : '' %>
         <label>
-          <input name="project_ids[]" value="<%= project[:id] %>" type="checkbox" /><%= project[:name] %>
+          <input name="project_ids[]" value="<%= project[:id] %>" type="checkbox" <%= checked %>/><%= project[:name] %>
         </label>
       <% end %>
       <input type='submit'/>
@@ -71,4 +72,3 @@
   </div>
 </body>
 </html>
-

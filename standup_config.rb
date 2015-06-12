@@ -29,10 +29,15 @@ end
 class StandupConfig < Sinatra::Base
   enable :sessions
 
+  before do
+    cache_control :private, :max_age => 0
+  end
+
   get '/login' do
     session["return"] = params["return_to"]
     if params["api_token"]
       session["api_token"] = params["api_token"]
+      session['ids'] = params['ids']
       redirect to("/config")
     else
       File.read("templates/login.html")
@@ -51,10 +56,14 @@ class StandupConfig < Sinatra::Base
   end
 
   post '/config' do
+    session.delete('api_token')
+    session.delete('ids')
     give_pebble_value(params)
   end
 
   get '/logout' do
+    session.delete('api_token')
+    session.delete('ids')
     give_pebble_value(clear: "yes")
   end
 
